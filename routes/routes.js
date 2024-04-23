@@ -3,9 +3,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { configDotenv } from 'dotenv';
-configDotenv.apply();
-
+import dotenv from 'dotenv';
+dotenv.config();
 const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -111,17 +110,7 @@ router.get('/categories/:category', async (req, res) => {
 		});
 	}
 });
-router.get('/products', async (req, res) => {
-	try {
-		let getProductsQuery = `SELECT * FROM products;`;
-		let productsJson = await db.all(getProductsQuery);
-		res.json(productsJson);
-	} catch (error) {
-		res.status(500).json({
-			message: `Internal Server Error ${error.message} - getproducts`,
-		});
-	}
-});
+
 router.get('/cart', authenticateUser, async (req, res) => {
 	console.log('in-cart');
 	const email = req.email;
@@ -135,106 +124,7 @@ router.get('/cart', authenticateUser, async (req, res) => {
 		res.status(500).json({ message: 'Internal Server Error' });
 	}
 });
-router.get('/users', async (req, res) => {
-	try {
-		const data = await db.all('SELECT * FROM users;');
-		res.json(data);
-	} catch (error) {
-		console.error(`Database query error: ${error.message}`);
-		resstatus(500).json({ message: `Internal Server Error ${error.message}` });
-	}
-});
-router.post('/addUser', async (req, res) => {
-	let { email, password, fullName, mobile } = req.body;
 
-	let isUserRegistered = await isUser(email);
-	console.log(isUserRegistered);
-	if (isUserRegistered) {
-		res.status(409).json({ message: 'User already registered.' });
-	} else {
-		let hashedPassword = await bcrypt.hash(
-			password,
-			parseInt(process.env.SALT_ROUNDS)
-		);
-		console.log('hashed: ', hashedPassword);
-		try {
-			let addUserQuery = `INSERT INTO 
-            users("email", "password", "full_name", "mobile")
-            values("${email}", "${hashedPassword}", "${fullName}", "${mobile}");`;
-			await db.run(addUserQuery);
-			res.json({ message: `${fullName} Registered successfully.` });
-		} catch (error) {
-			res
-				.status(500)
-				.json({ message: `Internal Server Error ${error.message}` });
-		}
-	}
-});
-router.delete('/deleteUser', authenticateUser, async (req, res) => {
-	let { email } = req.body;
-
-	let isUserRegistered = await isUser(email);
-	if (!isUserRegistered) {
-		res.json({ message: `User doest not Exist` });
-	} else {
-		try {
-			let deleteUserQuery = `DELETE FROM  users
-                    WHERE email LIKE "${email}" ;`;
-			await db.run(deleteUserQuery);
-			res.json(`User : "${email}" removed successfully.`);
-		} catch (error) {
-			res.status(500).json(`Internal server error : ${error.message}`);
-		}
-	}
-});
-router.put('/updateUser', authenticateUser, async (req, res) => {
-	let { email, password, full_name, mobile } = req.body;
-
-	let isUserRegistered = await isUser(email);
-	if (!isUserRegistered) {
-		res.json({ message: 'User does not exist.' });
-	} else {
-		try {
-			let isFirst = true;
-			let updateUserQuery = `UPDATE users SET  `;
-			if (password !== undefined) {
-				if (isFirst) {
-					updateUserQuery += ``;
-					isFirst = false;
-				} else {
-					updateUserQuery += `, `;
-				}
-				updateUserQuery += `password = "${password}"`;
-			}
-			if (full_name !== undefined) {
-				if (isFirst) {
-					updateUserQuery += ``;
-					isFirst = false;
-				} else {
-					updateUserQuery += `, `;
-				}
-				updateUserQuery += `full_name = "${full_name}"`;
-			}
-			if (mobile !== undefined) {
-				if (isFirst) {
-					updateUserQuery += ``;
-					isFirst = false;
-				} else {
-					updateUserQuery += `, `;
-				}
-				updateUserQuery += `mobile = "${mobile}"`;
-			}
-			updateUserQuery += ` WHERE email LIKE "${email}" ;`;
-
-			await db.run(updateUserQuery);
-			res.json({ message: `User : "${email}" details updated successfully.` });
-		} catch (error) {
-			res
-				.status(500)
-				.json({ messgae: `Internal server error : ${error.message}` });
-		}
-	}
-});
 router.post('/addProductToCart', authenticateUser, async (req, res) => {
 	let { productId, quantity } = req.body;
 	const email = req.email;
@@ -321,19 +211,19 @@ router.delete(
 	}
 );
 
-router.get('/products/:productId', async (req, res) => {
-	try {
-		let { productId } = req.params;
+// router.get('/products/:productId', async (req, res) => {
+// 	try {
+// 		let { productId } = req.params;
 
-		let getProductsQuery = `SELECT * FROM products
-        WHERE id = ${productId} ;`;
-		let productDetails = await db.get(getProductsQuery);
-		res.json(productDetails);
-	} catch (error) {
-		res
-			.status(500)
-			.json({ message: `Internal Server Error :${error.message}` });
-	}
-});
+// 		let getProductsQuery = `SELECT * FROM products
+//         WHERE id = ${productId} ;`;
+// 		let productDetails = await db.get(getProductsQuery);
+// 		res.json(productDetails);
+// 	} catch (error) {
+// 		res
+// 			.status(500)
+// 			.json({ message: `Internal Server Error :${error.message}` });
+// 	}
+// });
 
 export { router };

@@ -3,6 +3,8 @@ import dontenv from 'dotenv';
 import cors from 'cors';
 import { router } from './routes/routes.js';
 import { connectToDatabase } from './config/database.js';
+import './routes/productRouts.js';
+import './routes/userRouts.js';
 
 dontenv.config();
 

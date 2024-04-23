@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const productSchema = new Schema({
-	id: {
+	productId: {
 		type: Number,
 		required: true,
 		unique: true,
@@ -50,6 +50,6 @@ const productSchema = new Schema({
 	},
 });
 
-const Product = mongoose.model('Product', productSchema);
+const Product = mongoose.model('Product', productSchema, 'product');
 
 export default Product;
