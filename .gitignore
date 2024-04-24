@@ -13,3 +13,4 @@ yarn-error.log*
 
 # Environment variables
 .env
+products.js

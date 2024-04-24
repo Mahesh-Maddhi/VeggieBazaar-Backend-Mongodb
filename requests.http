@@ -39,7 +39,7 @@ Content-Type: application/json
 ###
 POST http://localhost:7200/addProductToCart
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1haGVzaCBNYWRkaGkiLCJlbWFpbCI6Im1hZGRpbWFoZXNoMTExQGdtYWlsLmNvbSIsImlhdCI6MTcxMzM0NzU5NSwiZXhwIjoxNzE1OTM5NTk1fQ.fzAlmu7Ggf7OX3LqdM5NwdbdP9-sat6zIp_18MY9-WE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1haGVzaCBNYWRkaGkiLCJlbWFpbCI6Im1hZGRpbWFoZXNoMTExQGdtYWlsLmNvbSIsImlhdCI6MTcxMzkzOTE4OCwiZXhwIjoxNzE2NTMxMTg4fQ.BVMQyFtOVzmjPKW6Q4OMs4PQqCPVkjTDDiCuH2RqOkE
 
 {
     "email": "maddimahesh111@gmail.com",
@@ -61,11 +61,12 @@ Content-Type: application/json
 ###
 PUT http://localhost:7200/updateUser 
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1haGVzaCBNYWRkaGkiLCJlbWFpbCI6Im1hZGRpbWFoZXNoMTExQGdtYWlsLmNvbSIsImlhdCI6MTcxMzkzOTE4OCwiZXhwIjoxNzE2NTMxMTg4fQ.BVMQyFtOVzmjPKW6Q4OMs4PQqCPVkjTDDiCuH2RqOkE
 
 {
-    "email": "test@gmail.com",
-    "password": "test1234",
-    "fullName": "testing",
+    "email": "test1@gmail.com",
+    "password": "12345",
+    "fullName": "testing1",
     "mobile": "12345125"
   }
 ###
@@ -118,6 +119,6 @@ Content-Type: application/json
     "mobile": "9876543210"
 }
 
-### 
-GET http://localhost:7200/test
-Content-Type: application/json
+# ### 
+# GET http://localhost:7200/product/insert
+# Content-Type: application/json

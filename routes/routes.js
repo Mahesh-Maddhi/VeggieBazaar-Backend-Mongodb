@@ -36,45 +36,7 @@ async function authenticateUser(req, res, next) {
 			.json({ message: 'Internal Server Error - authenticateUser' });
 	}
 }
-async function isUser(email) {
-	let isUserRegisteredQuery = `SELECT * FROM users
-                WHERE email LIKE "${email}" `;
-	let isUserRegistered = await db.get(isUserRegisteredQuery);
-	return isUserRegistered ? true : false;
-}
 
-router.post('/login', async (req, res) => {
-	const { email, password } = req.body;
-	if (!email || !password) {
-		return res
-			.status(400)
-			.json({ message: 'Email and Password are required.' });
-	}
-	try {
-		let user = await db.get(
-			`SELECT * FROM users WHERE email LIKE "${email}" ;`
-		);
-		console.log('db-user', user);
-		if (user) {
-			let isPasswordMatched = await bcrypt.compare(password, user.password);
-			if (isPasswordMatched) {
-				// generating JWT Token
-				let payload = { username: user.full_name, email: user.email };
-				const jwtToken = jwt.sign(payload, process.env.SECRET_KEY, {
-					expiresIn: '30d',
-				});
-
-				res.json({ token: jwtToken, message: 'login Successful' });
-			} else {
-				res.json({ message: 'Password Incorrect' });
-			}
-		} else {
-			res.status(400).json({ message: 'User Does not Exist' });
-		}
-	} catch (error) {
-		res.status(500).json({ message: 'Internal Server Error - login' });
-	}
-});
 router.get('/', (req, res) => {
 	try {
 		res.json({ message: 'successful' });
@@ -94,19 +56,6 @@ router.get('/search', async (req, res) => {
 	} catch (error) {
 		res.status(500).json({
 			message: `Internal Server Error ${error.message} - search`,
-		});
-	}
-});
-router.get('/categories/:category', async (req, res) => {
-	const { category = 'empty' } = req.params;
-	console.log('category', category);
-	try {
-		let getProductsQuery = `SELECT * FROM products WHERE category LIKE "${category}";`;
-		let productsJson = await db.all(getProductsQuery);
-		res.json(productsJson);
-	} catch (error) {
-		res.status(500).json({
-			message: `Internal Server Error ${error.message} - category`,
 		});
 	}
 });
@@ -210,20 +159,5 @@ router.delete(
 		}
 	}
 );
-
-// router.get('/products/:productId', async (req, res) => {
-// 	try {
-// 		let { productId } = req.params;
-
-// 		let getProductsQuery = `SELECT * FROM products
-//         WHERE id = ${productId} ;`;
-// 		let productDetails = await db.get(getProductsQuery);
-// 		res.json(productDetails);
-// 	} catch (error) {
-// 		res
-// 			.status(500)
-// 			.json({ message: `Internal Server Error :${error.message}` });
-// 	}
-// });
 
 export { router };
