@@ -26,7 +26,6 @@ router.get('/products/:productId', async (req, res) => {
 
 router.get('/categories/:category', async (req, res) => {
 	const { category = 'empty' } = req.params;
-	console.log('category', category);
 	try {
 		const products = await Product.find({ category: category });
 		res.json(products);

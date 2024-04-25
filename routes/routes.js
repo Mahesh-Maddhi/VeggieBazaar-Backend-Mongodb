@@ -4,38 +4,11 @@ import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { authenticateUser } from './auth.js';
 dotenv.config();
 const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-async function authenticateUser(req, res, next) {
-	let jwtToken = req.headers['authorization']; // only taking token from " BEARER 'token' "
-	if (jwtToken) {
-		jwtToken = jwtToken.split(' ')[1];
-	}
-	try {
-		if (!jwtToken) {
-			return res.status(403).json({
-				message: 'Token is required',
-				warning: 'You are Not Authorized to Access This Content',
-			});
-		}
-
-		// verifying jwt token
-		let decoded = jwt.verify(jwtToken, process.env.SECRET_KEY);
-		req.username = decoded.username;
-		req.email = decoded.email;
-		next();
-	} catch (error) {
-		if (error.name === 'JsonWebTokenError') {
-			return res.status(401).json({ message: 'Invalid token' });
-		}
-		res
-			.status(500)
-			.json({ message: 'Internal Server Error - authenticateUser' });
-	}
-}
 
 router.get('/', (req, res) => {
 	try {
