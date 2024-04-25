@@ -1,5 +1,5 @@
 import Product from '../models/Product.js';
-// import { productsData } from '../products.js';
+
 import { router } from './routes.js';
 
 router.get('/products', async (req, res) => {
@@ -26,7 +26,6 @@ router.get('/products/:productId', async (req, res) => {
 
 router.get('/categories/:category', async (req, res) => {
 	const { category = 'empty' } = req.params;
-	console.log('category', category);
 	try {
 		const products = await Product.find({ category: category });
 		res.json(products);

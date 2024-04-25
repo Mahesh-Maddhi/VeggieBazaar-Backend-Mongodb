@@ -13,10 +13,7 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
-connectToDatabase().catch((error) => {
-	console.error('Database connection error:', error);
-	process.exit(1);
-});
+connectToDatabase();
 
 app.listen(PORT, () => {
 	console.log(`Server is running at http://localhost:${PORT}`);
