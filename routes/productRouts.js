@@ -1,4 +1,5 @@
 import Product from '../models/Product.js';
+
 import { router } from './routes.js';
 
 router.get('/products', async (req, res) => {
