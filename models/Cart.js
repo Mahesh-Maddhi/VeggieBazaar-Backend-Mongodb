@@ -1,21 +1,49 @@
 import mongoose from "mongoose";
 import Product from './Product.js' 
 
-// Define the schema for the CartItem
-const cartItemSchema = new mongoose.Schema({
-    ...Product,
+const {Schema} = mongoose;
+
+const cartItemSchema = new Schema({
+    productId: {
+		type: Number,
+		required: true,
+		unique: true,
+        ref : 'Product'
+	},
+	name: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	price: {
+		type: Number,
+		required: true,
+		min: 0,
+	},
+	discounted_price: {
+		type: Number,
+		default: 0,
+	},
+	description: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	image: {
+		type: String,
+		required: true,
+		trim: true,
+	},
     quantity: { type: Number, default: 1 },
 });
 
-// Define the schema for the Cart
-const cartSchema = new mongoose.Schema({
+const cartSchema = new Schema({
     email: { type: String, ref: 'User', required: true },
     items: [cartItemSchema],
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
 });
 
-// Create a model based on the schema
 const Cart = mongoose.model('Cart', cartSchema, 'cart');
 
-module.exports = Cart;
+export default Cart;

@@ -5,6 +5,7 @@ import { router } from './routes/routes.js';
 import { connectToDatabase } from './config/database.js';
 import './routes/productRouts.js';
 import './routes/userRouts.js';
+import './routes/cartRouts.js'
 
 dontenv.config();
 
