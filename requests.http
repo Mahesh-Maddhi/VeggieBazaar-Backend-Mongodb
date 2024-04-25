@@ -109,13 +109,13 @@ Content-Type: application/json
 }
 
 ###
-POST https://veggie-bazaar.vercel.app/addUser
+POST https://veggie-bazaar-backend-mongodb.vercel.app/addUser
 Content-Type: application/json
 
 {
    "email": "test@gmail.com",
     "password": "12345",
-    "full_name": "mahesh.m",
+    "fullName": "mahesh.m",
     "mobile": "9876543210"
 }
 
