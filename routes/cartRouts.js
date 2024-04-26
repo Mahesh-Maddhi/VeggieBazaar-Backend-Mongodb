@@ -42,6 +42,8 @@ router.post('/addToCart', authenticateUser, async (req, res) => {
 		const { productId, name, price, discounted_price, description, image } =
 			productDetails;
 
+		console.log('cart', cart);
+
 		if (!cart) {
 			cart = new Cart({
 				email: email,
@@ -61,6 +63,7 @@ router.post('/addToCart', authenticateUser, async (req, res) => {
 			const itemIndex = cart.items.findIndex(
 				(item) => item.productId === productId
 			);
+			console.log('itemIndex', itemIndex);
 
 			if (itemIndex !== -1) {
 				cart.items[itemIndex].quantity += quantity;
@@ -76,6 +79,7 @@ router.post('/addToCart', authenticateUser, async (req, res) => {
 				});
 			}
 		}
+		console.log('not saved yet', cart);
 
 		await cart.save();
 
@@ -93,11 +97,14 @@ router.delete(
 	'/deleteProductFromCart/:productId',
 	authenticateUser,
 	async (req, res) => {
-		const { productId } = req.params;
+		let { productId } = req.params;
+		productId = parseInt(productId);
+
 		const { email } = req.user;
 
 		try {
 			let cart = await Cart.findOne({ email: email });
+			// console.log('cart', cart);
 
 			if (!cart) {
 				res.json({ message: 'Item not found' });
@@ -105,6 +112,7 @@ router.delete(
 				const itemIndex = cart.items.findIndex(
 					(item) => item.productId === productId
 				);
+				console.log('itemIndex', itemIndex);
 
 				if (itemIndex === -1) {
 					res.json({ message: 'Item not found' });

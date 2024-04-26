@@ -1,14 +1,13 @@
-import mongoose from "mongoose";
-import Product from './Product.js' 
+import mongoose from 'mongoose';
+import Product from './Product.js';
 
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const cartItemSchema = new Schema({
-    productId: {
+	productId: {
 		type: Number,
 		required: true,
-		unique: true,
-        ref : 'Product'
+		ref: 'Product',
 	},
 	name: {
 		type: String,
@@ -34,14 +33,14 @@ const cartItemSchema = new Schema({
 		required: true,
 		trim: true,
 	},
-    quantity: { type: Number, default: 1 },
+	quantity: { type: Number, default: 1 },
 });
 
 const cartSchema = new Schema({
-    email: { type: String, ref: 'User', required: true },
-    items: [cartItemSchema],
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+	email: { type: String, ref: 'User', required: true },
+	items: [cartItemSchema],
+	createdAt: { type: Date, default: Date.now },
+	updatedAt: { type: Date, default: Date.now },
 });
 
 const Cart = mongoose.model('Cart', cartSchema, 'cart');
