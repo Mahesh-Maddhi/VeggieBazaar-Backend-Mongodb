@@ -4,20 +4,19 @@ import User from "../models/User.js";
 import { authenticateUser } from "./auth.js";
 import { router } from "./routes.js";
 
-router.get("/cart", async (req, res) => {
+router.get("/cart", authenticateUser, async (req, res) => {
   console.log("in-cart");
-  const email = req.email || "test@gmail.com";
+  const { email } = req.user;
+
   console.log(email);
   try {
     const user = await User.findOne({ email });
-    console.log(user);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     const cartItems = await Cart.findOne({ email: user.email });
-    console.log("ci", cartItems);
 
     if (!cartItems || cartItems?.length === 0) {
       return res.status(404).json({ message: "Cart is empty", products: [] });
@@ -30,8 +29,10 @@ router.get("/cart", async (req, res) => {
   }
 });
 
-router.post("/addToCart", async (req, res) => {
-  const { email, productId, quantity } = req.body;
+router.post("/addToCart", authenticateUser, async (req, res) => {
+  const { productId, quantity } = req.body;
+  const { email } = req.user;
+  console.log(email, quantity, productId);
 
   try {
     let cart = await Cart.findOne({ email: email });
@@ -40,6 +41,8 @@ router.post("/addToCart", async (req, res) => {
     });
     const { productId, name, price, discounted_price, description, image } =
       productDetails;
+
+    console.log("cart", cart);
 
     if (!cart) {
       cart = new Cart({
@@ -60,6 +63,7 @@ router.post("/addToCart", async (req, res) => {
       const itemIndex = cart.items.findIndex(
         (item) => item.productId === productId
       );
+      console.log("itemIndex", itemIndex);
 
       if (itemIndex !== -1) {
         cart.items[itemIndex].quantity += quantity;
@@ -75,6 +79,7 @@ router.post("/addToCart", async (req, res) => {
         });
       }
     }
+    console.log("not saved yet", cart);
 
     await cart.save();
 
@@ -88,34 +93,43 @@ router.post("/addToCart", async (req, res) => {
   }
 });
 
-router.delete("/deleteProductFromCart/:productId", async (req, res) => {
-  const { productId } = req.params;
-  const email = req.email || "test@gmail.com";
+router.delete(
+  "/deleteProductFromCart/:productId",
+  authenticateUser,
+  async (req, res) => {
+    let { productId } = req.params;
+    productId = parseInt(productId);
 
-  try {
-    let cart = await Cart.findOne({ email: email });
+    const { email } = req.user;
 
-    if (!cart) {
-      res.json({ message: "Item not found" });
-    } else {
-      const itemIndex = cart.items.findIndex(
-        (item) => item.productId === productId
-      );
+    try {
+      let cart = await Cart.findOne({ email: email });
+      // console.log('cart', cart);
 
-      if (itemIndex !== -1) {
+      if (!cart) {
         res.json({ message: "Item not found" });
       } else {
-        const deletedItem = cart.items.splice(itemIndex, 1);
-        await cart.save();
+        const itemIndex = cart.items.findIndex(
+          (item) => item.productId === productId
+        );
+        console.log("itemIndex", itemIndex);
 
-        res.status(200).json({
-          message: `${deletedItem[0]?.name} removed from cart successfully`,
-        });
+        if (itemIndex === -1) {
+          res.json({ message: "Item not found" });
+        } else {
+          const deletedItem = cart.items.splice(itemIndex, 1);
+          await cart.save();
+
+          res.status(200).json({
+            message: `${deletedItem[0]?.name} removed from cart successfully`,
+          });
+        }
       }
+    } catch (error) {
+      res.status(500).json({
+        message: "Error removing item from cart",
+        error: error.message,
+      });
     }
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error removing item from cart", error: error.message });
   }
-});
+);

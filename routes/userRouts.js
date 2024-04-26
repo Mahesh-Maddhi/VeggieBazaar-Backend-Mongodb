@@ -43,6 +43,7 @@ router.post('/addUser', async (req, res) => {
 				fullName,
 				mobile,
 			});
+			console.log(newUser);
 
 			await newUser.save(); // Save the user to the collection
 
