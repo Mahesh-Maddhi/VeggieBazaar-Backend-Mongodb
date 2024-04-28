@@ -151,3 +151,7 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:7200/user/maddimahesh111@gmail.com
+Content-Type: application/json
+
+###
