@@ -134,7 +134,12 @@ Content-Type: application/json
     "mobile": "9876543210"
 }
 
+### 
+GET http://localhost:7200/contact/getMessages/maddimahesh111@gmail.com
+Content-Type: application/json
+
 ###
+
 POST http://localhost:7200/contact/addMessage
 Content-Type: application/json
 
@@ -142,5 +147,11 @@ Content-Type: application/json
   "email":"maddimahesh111@gmail.com",
   "name":"mahesh Maddhi",
   "subject":"testing",
-  "message":"testing 123"
+  "message":"testing 123"
 }
+
+###
+GET http://localhost:7200/user/maddimahesh111@gmail.com
+Content-Type: application/json
+
+###

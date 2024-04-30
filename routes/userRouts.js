@@ -16,7 +16,7 @@ router.get('/users', async (req, res) => {
 });
 
 router.get('/user/:email', async (req, res) => {
-	const { email } = req.body;
+	const { email } = req.params;
 	const user = await User.findOne({ email });
 	res.json(user);
 });
