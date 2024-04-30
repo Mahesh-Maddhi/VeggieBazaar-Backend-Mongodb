@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import { authenticateUser } from './auth.js';
 dotenv.config();
+import { ObjectId } from 'mongodb';
 const isUser = async (email) => {
 	const user = await User.findOne({ email });
 	return user !== null;
@@ -15,8 +16,8 @@ router.get('/users', async (req, res) => {
 	res.json(users);
 });
 
-router.get('/user/:email', async (req, res) => {
-	const { email } = req.params;
+router.get('/userDetails', authenticateUser, async (req, res) => {
+	const { email } = req.user;
 	const user = await User.findOne({ email });
 	res.json(user);
 });
@@ -149,5 +150,62 @@ router.post('/login', async (req, res) => {
 		}
 	} catch (error) {
 		res.status(500).json({ message: 'Internal Server Error - login' });
+	}
+});
+
+router.post('/addAddress', authenticateUser, async (req, res) => {
+	const { street, mandal, district, state, pincode, landMark } = req.body;
+	const { email } = req.user;
+	console.log('body :', req.body);
+	console.log('user :', req.user);
+	try {
+		const user = await User.findOne({ email });
+		console.log('db user :', user);
+		if (user) {
+			const address = {
+				street,
+				mandal,
+				district,
+				state,
+				pincode,
+				landMark,
+			};
+			user.addresses.push(address);
+			await user.save();
+			res.status(200).json({ message: 'Address added successfully.' });
+		} else {
+			res.status(400).send({ message: 'User not found' });
+		}
+	} catch (error) {
+		console.log('error: ', error);
+		res.status(500).json({ message: 'Internal server error' });
+	}
+});
+
+router.delete('/deleteAddress/:id', authenticateUser, async (req, res) => {
+	const { email } = req.user;
+	let { id } = req.params;
+	id = new ObjectId(id);
+	try {
+		const user = await User.findOne({ email: email });
+		// console.log('user', user);
+		if (user) {
+			// console.log('userAdd', user.addresses);
+			const addressIndex = user.addresses.findIndex((address) => {
+				// console.log(address);
+				console.log(address._id, id);
+				return id.toString() == address._id.toString();
+			});
+			if (addressIndex !== -1) {
+				user.addresses.splice(addressIndex, 1);
+				await user.save();
+				res.status(200).json({ message: 'Address removed successfully.' });
+			} else {
+				res.status(400).json({ message: 'Address not found.' });
+			}
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Internal server error' });
 	}
 });

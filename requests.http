@@ -21,10 +21,11 @@ POST http://localhost:7200/addUser
 Content-Type: application/json
 
 {
-    "email": "test@gmail.com",
-    "password": "test1234",
+    "email": "test3@gmail.com",
+    "password": "12345",
     "fullName": "testing123",
-    "mobile": "12345123455"
+    "mobile": "123451"
+    
   }
 ###
 
@@ -44,7 +45,7 @@ POST http://localhost:7200/login
 Content-Type: application/json
 
 {
-   "email": "maddimahesh111@gmail.com",
+   "email": "mahesh@gmail.com",
     "password": "12345"
 }
 ###
@@ -151,7 +152,27 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:7200/user/maddimahesh111@gmail.com
+GET http://localhost:7200/userDetails
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haGVzaCIsImVtYWlsIjoibWFoZXNoQGdtYWlsLmNvbSIsImlhdCI6MTcxNDQ2NDU5NSwiZXhwIjoxNzE3MDU2NTk1fQ.O6CSLV7gbiXqMdOXNBw-pKVVlyv55vWaGZJZ9_Jm2uo
 
 ###
+
+POST http://localhost:7200/addAddress
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1haGVzaCBNYWRkaGkiLCJlbWFpbCI6Im1haGVzaEBnbWFpbC5jb20iLCJpYXQiOjE3MTQ0ODAxMzgsImV4cCI6MTcxNzA3MjEzOH0.NS_USyUqQjUpC0D16aEXrBpI7xUqp0e0qAbcB7AZscA
+
+{
+  "street":"maddimahesh111@gmail.com",
+  "mandal":"mahesh Maddhi",
+  "district":"testing",
+  "state":"testing 123",
+  "pincode":"123",
+  "landMark": "jhkug"
+}
+
+###
+
+DELETE  http://localhost:7200/deleteAddress/6630e44bf5ce08f1a8c09abb
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1haGVzaCBNYWRkaGkiLCJlbWFpbCI6Im1haGVzaEBnbWFpbC5jb20iLCJpYXQiOjE3MTQ0ODAxMzgsImV4cCI6MTcxNzA3MjEzOH0.NS_USyUqQjUpC0D16aEXrBpI7xUqp0e0qAbcB7AZscA
