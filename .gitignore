@@ -13,4 +13,7 @@ yarn-error.log*
 
 # Environment variables
 .env
+# development helping Files
 products.js
+requests.http
+.http

@@ -17,19 +17,19 @@ router.get('/', (req, res) => {
 		});
 	}
 });
-router.get('/search', async (req, res) => {
-	const { q } = req.query;
-	const searchProductsQuery = `SELECT * FROM products WHERE name LIKE '%${q}%'
-   OR description LIKE '%${q}%' ;`;
-	try {
-		let productsArray = await db.all(searchProductsQuery);
-		res.json({ products: productsArray });
-	} catch (error) {
-		res.status(500).json({
-			message: `Internal Server Error ${error.message} - search`,
-		});
-	}
-});
+// router.get('/search', async (req, res) => {
+// 	const { q } = req.query;
+// 	const searchProductsQuery = `SELECT * FROM products WHERE name LIKE '%${q}%'
+//    OR description LIKE '%${q}%' ;`;
+// 	try {
+// 		let productsArray = await db.all(searchProductsQuery);
+// 		res.json({ products: productsArray });
+// 	} catch (error) {
+// 		res.status(500).json({
+// 			message: `Internal Server Error ${error.message} - search`,
+// 		});
+// 	}
+// });
 
 // router.get('/cart', authenticateUser, async (req, res) => {
 // 	console.log('in-cart');
@@ -57,7 +57,7 @@ router.get('/search', async (req, res) => {
 // 		console.log('cart-product', cartProduct);
 
 // 		if (cartProduct === undefined) {
-// 			let addProductToCartQuery = `INSERT INTO 
+// 			let addProductToCartQuery = `INSERT INTO
 //                 cart("email", "product_id", "quantity")
 //                 values("${email}", ${productId}, ${quantity});`;
 // 			try {
@@ -74,7 +74,7 @@ router.get('/search', async (req, res) => {
 // 		} else {
 // 			let updateProductToCartQuery = `UPDATE cart
 //                 SET quantity =  ${quantity}
-//                  WHERE email LIKE "${email}" 
+//                  WHERE email LIKE "${email}"
 //                  AND product_id = ${productId};`;
 // 			try {
 // 				await db.run(updateProductToCartQuery);
@@ -101,8 +101,8 @@ router.get('/search', async (req, res) => {
 // 		const email = req.email;
 
 // 		try {
-// 			const getProductIdQuery = `SELECT * FROM cart 
-//         WHERE product_id = ${productId} 
+// 			const getProductIdQuery = `SELECT * FROM cart
+//         WHERE product_id = ${productId}
 //         AND email LIKE "${email}";`;
 // 			let cartProduct = await db.get(getProductIdQuery);
 
@@ -110,7 +110,7 @@ router.get('/search', async (req, res) => {
 // 				res.status(404).json({ message: `product not found in cart` });
 // 			} else {
 // 				let deleteProductFromCartQuery = `DELETE FROM cart
-//                 WHERE email LIKE "${email}" 
+//                 WHERE email LIKE "${email}"
 //                 AND product_id = ${productId};`;
 // 				try {
 // 					await db.run(deleteProductFromCartQuery);

@@ -36,18 +36,24 @@ router.get('/categories/:category', async (req, res) => {
 	}
 });
 
-// router.get('/product/insert', async (req, res) => {
-// 	console.log('insert');
-// 	try {
-// 		productsData.forEach(async (productData) => {
-// 			const result = await Product.insertMany(productData);
+router.get('/search', async (req, res) => {
+	const { q } = req.query;
 
-// 			console.log(result);
-// 		});
-// 		res.json(result);
-// 	} catch (error) {
-// 		res.status(500).json({
-// 			message: `Internal Server Error: ${error} - insertProducts`,
-// 		});
-// 	}
-// });
+	try {
+		const searchProductsQuery = {
+			$or: [
+				{ name: { $regex: q, $options: 'i' } },
+				{ category: { $regex: q, $options: 'i' } },
+				{ description: { $regex: q, $options: 'i' } },
+			],
+		};
+
+		const productsArray = await Product.find(searchProductsQuery);
+
+		res.json(productsArray);
+	} catch (error) {
+		res.status(500).json({
+			message: `Internal Server Error ${error.message} - search`,
+		});
+	}
+});
