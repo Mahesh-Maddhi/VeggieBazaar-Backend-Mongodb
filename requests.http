@@ -160,15 +160,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1ha
 
 POST http://localhost:7200/addAddress
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1haGVzaCBNYWRkaGkiLCJlbWFpbCI6Im1haGVzaEBnbWFpbC5jb20iLCJpYXQiOjE3MTQ0ODAxMzgsImV4cCI6MTcxNzA3MjEzOH0.NS_USyUqQjUpC0D16aEXrBpI7xUqp0e0qAbcB7AZscA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haGVzaCBrIiwiZW1haWwiOiJtYWhlc2gxQGdtYWlsLmNvbSIsImlhdCI6MTcxNDQ4MjQwMywiZXhwIjoxNzE3MDc0NDAzfQ.ujYX_4gwqXcJv6vEJWeM5V57Bc7rQM7jNiHwFn_cRGc
 
 {
-  "street":"maddimahesh111@gmail.com",
-  "mandal":"mahesh Maddhi",
-  "district":"testing",
-  "state":"testing 123",
-  "pincode":"123",
-  "landMark": "jhkug"
+  "street":"Tekulapally",
+  "mandal":"Mominpet",
+  "district":"Vikarabad",
+  "state":"Telangana",
+  "pincode":"501202",
+  "landMark": "Water Tank"
 }
 
 ###

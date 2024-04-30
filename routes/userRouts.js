@@ -19,6 +19,7 @@ router.get('/users', async (req, res) => {
 router.get('/userDetails', authenticateUser, async (req, res) => {
 	const { email } = req.user;
 	const user = await User.findOne({ email });
+	console.log(user);
 	res.json(user);
 });
 
