@@ -40,7 +40,6 @@ const allowedOrigins = [
 	'http://localhost:5000',
 	'https://veggie-bazaar-backend-mongodb.vercel.app',
 ];
-// app.options('*', cors(corsOptions));
 const corsOptions = {
 	origin: (origin, callback) => {
 		// Allow requests from allowed origins
@@ -51,7 +50,7 @@ const corsOptions = {
 			callback(new Error('Not allowed by CORS'));
 		}
 	},
-	credentials: true, // Enable cookies and other credentials in cross-origin requests
+	credentials: 'include', // Enable cookies and other credentials in cross-origin requests
 	methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
 	allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 };
