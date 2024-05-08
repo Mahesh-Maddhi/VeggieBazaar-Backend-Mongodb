@@ -25,21 +25,13 @@ app.listen(PORT, () => {
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = [
-	'https://veggiebazaar.vercel.app',
-	'http://localhost:7200',
-	'http://localhost:3000',
-	'http://localhost:5000',
-];
-
 const corsOptions = {
-	origin: (origin, callback) => {
-		if (allowedOrigins.includes(origin) || !origin) {
-			callback(null, true);
-		} else {
-			callback(new Error('Not allowed by CORS'));
-		}
-	},
+	origin: [
+		'https://veggiebazaar.vercel.app',
+		'http://localhost:7200',
+		'http://localhost:3000',
+		'http://localhost:5000',
+	],
 	credentials: true,
 };
 
