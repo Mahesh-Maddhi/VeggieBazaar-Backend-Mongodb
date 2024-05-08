@@ -3,6 +3,7 @@ import dontenv from 'dotenv';
 import cors from 'cors';
 import { router } from './routes/routes.js';
 import { connectToDatabase } from './config/database.js';
+import cookieParser from 'cookie-parser';
 import './routes/productRouts.js';
 import './routes/userRouts.js';
 import './routes/cartRouts.js';
@@ -23,6 +24,7 @@ app.listen(PORT, () => {
 app.use(express.json());
 app.use(cors());
 app.use('/', router);
+app.use(cookieParser());
 
 export { router };
 export default app;

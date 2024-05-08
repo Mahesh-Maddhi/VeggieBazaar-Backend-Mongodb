@@ -127,32 +127,43 @@ router.post('/login', async (req, res) => {
 	if (!email || !password) {
 		return res
 			.status(400)
-			.json({ message: 'Email and Password are required.' });
+			.json({ message: 'Email and password are required.' });
 	}
 
 	try {
 		const user = await User.findOne({ email });
 
-		if (user) {
-			const isPasswordMatched = await bcrypt.compare(password, user.password);
-			if (isPasswordMatched) {
-				const payload = { username: user.fullName, email: user.email };
-				const jwtToken = jwt.sign(payload, process.env.SECRET_KEY, {
-					expiresIn: '30d',
-				});
-
-				res.json({ token: jwtToken, message: 'Login Successful' });
-			} else {
-				res.status(401).json({ message: 'Password Incorrect' });
-			}
-		} else {
-			res.status(404).json({ message: 'User Does Not Exist' });
+		if (!user) {
+			return res.status(404).json({ message: 'User does not exist.' });
 		}
+
+		const isPasswordMatched = await bcrypt.compare(password, user.password);
+
+		if (!isPasswordMatched) {
+			return res.status(401).json({ message: 'Invalid credentials.' });
+		}
+
+		const payload = {
+			userId: user._id,
+			email: user.email,
+			username: user.fullName,
+		};
+		const jwtToken = jwt.sign(payload, process.env.SECRET_KEY, {
+			expiresIn: '30d',
+		});
+
+		res.cookie('auth_token', jwtToken, {
+			httpOnly: true,
+			maxAge: 30 * 24 * 60 * 60 * 1000,
+			sameSite: 'Lax',
+		});
+
+		return res.json({ message: 'Login successful.', token: jwtToken });
 	} catch (error) {
-		res.status(500).json({ message: 'Internal Server Error - login' });
+		console.error(`Login error: ${error}`);
+		return res.status(500).json({ message: 'An error occurred during login.' });
 	}
 });
-
 router.post('/addAddress', authenticateUser, async (req, res) => {
 	const { street, mandal, district, state, pincode, landMark } = req.body;
 	const { email } = req.user;
