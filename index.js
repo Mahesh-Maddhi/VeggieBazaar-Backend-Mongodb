@@ -38,6 +38,7 @@ const allowedOrigins = [
 	'http://localhost:7200',
 	'http://localhost:3000',
 	'http://localhost:5000',
+	'https://veggie-bazaar-backend-mongodb.vercel.app',
 ];
 // app.options('*', cors(corsOptions));
 const corsOptions = {
@@ -55,6 +56,7 @@ const corsOptions = {
 	allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 };
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use('/', router);
 app.use(authenticateUser);
 
