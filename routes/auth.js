@@ -4,7 +4,8 @@ import User from '../models/User.js';
 dotenv.config();
 
 export async function authenticateUser(req, res, next) {
-	let jwtToken = req.headers['authorization']?.split(' ')[1];
+	let jwtToken = req.cookies['authToken'];
+	console.log('jwtToken', jwtToken);
 
 	if (!jwtToken) {
 		return res.status(403).json({
