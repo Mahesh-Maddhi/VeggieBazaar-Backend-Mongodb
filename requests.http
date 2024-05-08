@@ -116,7 +116,7 @@ Content-Type: application/json
 
 ###
 
-POST https://veggie-bazaar.vercel.app/login
+POST https://veggie-bazaar-backend-mongodb.vercel.app/login
 Content-Type: application/json
 
 {
