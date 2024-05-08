@@ -44,6 +44,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use('/', router);
 app.use(authenticateUser);
 
