@@ -156,7 +156,7 @@ router.post('/login', async (req, res) => {
 			httpOnly: true,
 			maxAge: 30 * 24 * 60 * 60 * 1000,
 			secure: true, // for production
-			sameSite: 'None', //for production
+			sameSite: 'Lax', //for production
 		});
 		res.cookie('isLoggedIn', true);
 
