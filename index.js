@@ -21,39 +21,19 @@ connectToDatabase();
 app.use(express.json());
 app.use(cookieParser());
 
-// const corsOptions = {
-// 	origin: [
-// 		'https://veggiebazaar.vercel.app',
-// 		'http://localhost:7200',
-// 		'http://localhost:3000',
-// 		'http://localhost:5000',
-// 	],
-// 	credentials: true,
-// 	methods: ['GET', 'POST', 'PUT', 'DELETE'],
-// 	allowedHeaders: ['Content-Type', 'Authorization'],
-// };
-
-const allowedOrigins = [
-	'https://veggiebazaar.vercel.app',
-	'http://localhost:7200',
-	'http://localhost:3000',
-	'http://localhost:5000',
-	'https://veggie-bazaar-backend-mongodb.vercel.app',
-];
 const corsOptions = {
-	origin: (origin, callback) => {
-		// Allow requests from allowed origins
-		if (allowedOrigins.includes(origin) || !origin) {
-			callback(null, true);
-		} else {
-			// If the origin is not allowed, deny the request
-			callback(new Error('Not allowed by CORS'));
-		}
-	},
-	credentials: 'include', // Enable cookies and other credentials in cross-origin requests
-	methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
-	allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+	origin: [
+		'https://veggiebazaar.vercel.app',
+		'http://localhost:7200',
+		'http://localhost:3000',
+		'http://localhost:5000',
+		'https://veggie-bazaar-backend-mongodb.vercel.app',
+	],
+	credentials: true,
+	methods: ['GET', 'POST', 'PUT', 'DELETE'],
+	allowedHeaders: ['Content-Type', 'Authorization'],
 };
+
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 app.use('/', router);

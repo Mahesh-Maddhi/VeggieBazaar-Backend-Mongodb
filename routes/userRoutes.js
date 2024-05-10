@@ -11,7 +11,7 @@ const isUser = async (email) => {
 	return user !== null;
 };
 
-router.get('/users', authenticateUser, async (req, res) => {
+router.get('/users', async (req, res) => {
 	const users = await User.find({});
 	res.json(users);
 });
@@ -180,11 +180,8 @@ router.post('/logout', (req, res) => {
 router.post('/addAddress', authenticateUser, async (req, res) => {
 	const { street, mandal, district, state, pincode, landMark } = req.body;
 	const { email } = req.user;
-	console.log('body :', req.body);
-	console.log('user :', req.user);
 	try {
 		const user = await User.findOne({ email });
-		console.log('db user :', user);
 		if (user) {
 			const address = {
 				street,
@@ -212,11 +209,8 @@ router.delete('/deleteAddress/:id', authenticateUser, async (req, res) => {
 	id = new ObjectId(id);
 	try {
 		const user = await User.findOne({ email: email });
-		// console.log('user', user);
 		if (user) {
-			// console.log('userAdd', user.addresses);
 			const addressIndex = user.addresses.findIndex((address) => {
-				// console.log(address);
 				console.log(address._id, id);
 				return id.toString() == address._id.toString();
 			});

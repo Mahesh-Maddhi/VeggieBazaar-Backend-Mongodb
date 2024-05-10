@@ -5,10 +5,8 @@ import { authenticateUser } from './auth.js';
 import { router } from './routes.js';
 
 router.get('/cart', authenticateUser, async (req, res) => {
-	console.log('in-cart');
 	const { email } = req.user;
 
-	console.log(email);
 	try {
 		const user = await User.findOne({ email });
 
@@ -32,7 +30,6 @@ router.get('/cart', authenticateUser, async (req, res) => {
 router.post('/addToCart', authenticateUser, async (req, res) => {
 	const { productId, quantity } = req.body;
 	const { email } = req.user;
-	console.log(email, quantity, productId);
 
 	try {
 		let cart = await Cart.findOne({ email: email });
@@ -41,8 +38,6 @@ router.post('/addToCart', authenticateUser, async (req, res) => {
 		});
 		const { productId, name, price, discounted_price, description, image } =
 			productDetails;
-
-		console.log('cart', cart);
 
 		if (!cart) {
 			cart = new Cart({
@@ -63,7 +58,6 @@ router.post('/addToCart', authenticateUser, async (req, res) => {
 			const itemIndex = cart.items.findIndex(
 				(item) => item.productId === productId
 			);
-			console.log('itemIndex', itemIndex);
 
 			if (itemIndex !== -1) {
 				cart.items[itemIndex].quantity += quantity;
@@ -79,7 +73,6 @@ router.post('/addToCart', authenticateUser, async (req, res) => {
 				});
 			}
 		}
-		console.log('not saved yet', cart);
 
 		await cart.save();
 
@@ -104,7 +97,6 @@ router.delete(
 
 		try {
 			let cart = await Cart.findOne({ email: email });
-			// console.log('cart', cart);
 
 			if (!cart) {
 				res.json({ message: 'Item not found' });
@@ -112,7 +104,6 @@ router.delete(
 				const itemIndex = cart.items.findIndex(
 					(item) => item.productId === productId
 				);
-				console.log('itemIndex', itemIndex);
 
 				if (itemIndex === -1) {
 					res.json({ message: 'Item not found' });
