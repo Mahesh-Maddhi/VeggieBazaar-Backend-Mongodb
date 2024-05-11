@@ -35,9 +35,10 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use('/', router);
-app.use(authenticateUser);
 app.options('*', cors(corsOptions));
+app.use(authenticateUser);
+app.use('/', router);
+
 app.listen(PORT, () => {
 	console.log(`Server is running at http://localhost:${PORT}`);
 });
