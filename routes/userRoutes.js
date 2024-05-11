@@ -152,29 +152,11 @@ router.post('/login', async (req, res) => {
 			expiresIn: '30d',
 		});
 
-		res.cookie('authToken', jwtToken, {
-			httpOnly: true,
-			maxAge: 30 * 24 * 60 * 60 * 1000,
-			secure: true, // for production
-			sameSite: 'Lax', //for production
-		});
-		res.cookie('isLoggedIn', true);
-
 		return res.json({ message: 'Login successful.', token: jwtToken });
 	} catch (error) {
 		console.error(`Login error: ${error}`);
 		return res.status(500).json({ message: 'An error occurred during login.' });
 	}
-});
-router.post('/logout', (req, res) => {
-	res.cookie('authToken', '', {
-		maxAge: -1,
-		path: '/',
-		secure: true,
-		sameSite: 'none',
-	});
-	res.cookie('isLoggedIn', false);
-	return res.status(200).json({ message: 'Logged out successfully' });
 });
 
 router.post('/addAddress', authenticateUser, async (req, res) => {

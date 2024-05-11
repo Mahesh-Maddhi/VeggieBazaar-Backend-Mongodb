@@ -24,10 +24,9 @@ app.use(cookieParser());
 const corsOptions = {
 	origin: [
 		'https://veggiebazaar.vercel.app',
-		'http://localhost:7200',
+		'http://localhost:8000',
 		'http://localhost:3000',
 		'http://localhost:5000',
-		'https://veggie-bazaar-backend-mongodb.vercel.app',
 	],
 	credentials: true,
 	methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -35,7 +34,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
 app.use('/', router);
 app.use(authenticateUser);
 
