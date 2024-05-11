@@ -24,6 +24,7 @@ app.use(cookieParser());
 const corsOptions = {
 	origin: [
 		'https://veggiebazaar.vercel.app',
+		'https://veggiebazaar.vercel.app',
 		'http://localhost:8000',
 		'http://localhost:3000',
 		'http://localhost:5000',
@@ -36,7 +37,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use('/', router);
 app.use(authenticateUser);
-
+app.options('*', cors(corsOptions));
 app.listen(PORT, () => {
 	console.log(`Server is running at http://localhost:${PORT}`);
 });
