@@ -5,6 +5,7 @@ dotenv.config();
 
 export async function authenticateUser(req, res, next) {
 	let jwtToken = req.cookies['authToken'];
+	console.log('jwtToken', jwtToken);
 
 	if (!jwtToken) {
 		return res.status(403).json({
